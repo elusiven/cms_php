@@ -8,3 +8,9 @@ test3 test 4
 
 $name = $_POST[‘name’];
 $surname = $_POST[‘surname’];
+
+if (isset($_POST[‘name’])){
+ echo “Name is submitted correctly”;
+} else {
+ echo “Name is not submitted.”;
+}
