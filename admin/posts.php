@@ -19,8 +19,7 @@
                             Welcome to Admin Page
                             <small>Author</small>
                         </h1>
-                        
-                        
+                                                
                       <?php
                         
                         if(isset($_GET['source'])){
@@ -30,8 +29,8 @@
                         }
                         
                         switch($source) {
-                            case '34';
-                            echo "NICE";
+                            case 'add_post';
+                            include "includes/add_post.php";
                             break;
                             case '34';
                             echo "NICE";
@@ -46,11 +45,7 @@
                         }
                         
                         ?>
-                        
-                        
-                        
-                        
-                        
+
                 </div>
                 <!-- /.row -->
 
