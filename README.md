@@ -6,5 +6,5 @@ test2
 
 test3 test 4 
 
-$name
-$surname
+$name = $_POST[‘name’];
+$surname = $_POST[‘surname’];
