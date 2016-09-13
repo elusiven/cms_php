@@ -95,7 +95,7 @@ function ShowAllPosts() {
          echo "<td>$post_title</td>";
          echo "<td>$post_cat</td>";
          echo "<td>$post_status</td>";
-         echo "<td>$post_image</td>";
+         echo "<td><img src='../images/$post_image' width='100px' alt='image'></td>";
          echo "<td>$post_tags</td>";
          echo "<td>$post_comments</td>";
          echo "<td>$post_date</td>";
