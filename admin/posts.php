@@ -32,8 +32,8 @@
                             case 'add_post';
                             include "includes/add_post.php";
                             break;
-                            case '34';
-                            echo "NICE";
+                            case 'edit_post';
+                            include "includes/edit_post.php";
                             break;
                             case '34';
                             echo "NICE";
@@ -43,6 +43,8 @@
                             include "includes/view_all_posts.php";
                             break;
                         }
+                        
+                        
                         
                         ?>
 
