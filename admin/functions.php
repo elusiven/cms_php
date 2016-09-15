@@ -1,5 +1,15 @@
 <?php
 
+
+function ConfirmQuery($result) {
+    
+    global $connection;
+    
+    if(!$result){
+         die("QUERY FAILED." . mysqli_error($connection));
+    }
+}
+
 // CATEGORY FUNCTIONS START HERE
 
 function insert_categories() {
@@ -99,6 +109,8 @@ function ShowAllPosts() {
          echo "<td>$post_tags</td>";
          echo "<td>$post_comments</td>";
          echo "<td>$post_date</td>";
+         echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
+         echo "<td><a href='posts.php?delete={$post_id}''>Delete</a></td>";
          echo "</tr>";
                                     
    }

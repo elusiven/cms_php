@@ -18,4 +18,23 @@
 
                            </tbody>
                        </table>
+                       
+                       
+<?php
+
+  if(isset($_GET['delete'])) {
+      
+      $the_post_id = $_GET['delete'];
+      
+      $query = "DELETE FROM posts WHERE post_id = {$the_post_id}";
+      
+      $delete_post_query = mysqli_query($connection, $query);
+      
+      ConfirmQuery($delete_post_query);
+      
+      Header("Location: posts.php");
+        
+    }
+
+?>
 
