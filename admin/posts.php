@@ -35,10 +35,7 @@
                             case 'edit_post';
                             include "includes/edit_post.php";
                             break;
-                            case '34';
-                            echo "NICE";
-                            break;
-                                
+      
                             default:
                             include "includes/view_all_posts.php";
                             break;
