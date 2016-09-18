@@ -4,7 +4,7 @@ if(isset($_POST['create_post'])){
 
     $post_title = $_POST['title'];
     $post_author = $_POST['author'];
-    $post_category_id = $_POST['post_category_id'];
+    $post_category = $_POST['post_category'];
     $post_status = $_POST['post_status'];
     
     $post_image = $_FILES['image']['name'];
@@ -17,7 +17,7 @@ if(isset($_POST['create_post'])){
     
     move_uploaded_file($post_image_temp, "../images/$post_image");
     
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comment_count, post_status) VALUES ({$post_category_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comment_count}', '{$post_status}')";
+    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comment_count, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_comment_count}', '{$post_status}')";
     
     $add_post_query = mysqli_query($connection, $query);
     
@@ -35,8 +35,21 @@ if(isset($_POST['create_post'])){
         <input type="text" class="form-control" name="title">
     </div>
     <div class="form-group">
-        <label for="post_category">Post Category Id</label>
-        <input type="text" class="form-control" name="post_category_id">
+        <select name="post_category" id="">
+          <?php 
+            
+            $query = "SELECT * FROM categories";
+            $select_categories = mysqli_query($connection, $query);
+                          
+                 while($row = mysqli_fetch_assoc($select_categories)){
+                                     
+                    $cat_id = $row['cat_id'];
+                    $cat_title = $row['cat_title'];
+                     
+                    echo "<option value='$cat_id'>$cat_title</option>";  
+                 }
+            ?>
+        </select>
     </div>
     <div class="form-group">
         <label for="title">Post Author</label>
