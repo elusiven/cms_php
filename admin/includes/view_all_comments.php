@@ -23,9 +23,19 @@
                        
 <?php
 
-    DeleteComment();
-    UnApproveComment();
-    ApproveComment();
+  if(isset($_GET['delete'])) {
+      
+      $the_comment_id = $_GET['delete'];
+      
+      $query = "DELETE FROM comments WHERE comment_id = {$the_comment_id}";
+      
+      $delete_comment_query = mysqli_query($connection, $query);
+      
+      ConfirmQuery($delete_comment_query);
+      
+      Header("Location: comments.php");
+        
+    }
 
 ?>
 

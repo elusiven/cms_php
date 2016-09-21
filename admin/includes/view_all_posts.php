@@ -9,10 +9,8 @@
                                    <th>Image</th>
                                    <th>Tags</th>
                                    <th>Comments</th>
-                                   <th>Date</th>   
-                                   <th>Edit</th>
-                                   <th>Delete</th>                            
-                                   </tr>
+                                   <th>Date</th>
+                               </tr>
                            </thead>
                            <tbody>
                               
