@@ -1,5 +1,22 @@
 <?php ob_start(); ?>
+<?php session_start(); ?>
 <?php include "../includes/db.php"; ?>
+
+<?php 
+
+// If guest has no role then don't allow access to admin section. 
+if(!isset($_SESSION['role'])) {
+        header('Location: ../index.php');
+} else {
+    // If the user has a role admin then allow admin section, otherwise redirect to index. 
+    if ($_SESSION['role'] !== 'admin') {
+        header('Location: ../index.php');
+    }
+}
+
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +29,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Bootstrap Admin Template</title>
+    <title>CMS Admin</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">

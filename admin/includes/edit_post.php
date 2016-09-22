@@ -55,6 +55,8 @@ if(isset($_POST['edit_post'])){
     
     ConfirmQuery($edit_post_query);
     
+    header('Location: posts.php');
+    
 }
 
 ?>
