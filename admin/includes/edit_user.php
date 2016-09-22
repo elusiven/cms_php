@@ -26,31 +26,32 @@ $select_users_by_id = mysqli_query($connection, $query);
 
 if(isset($_POST['edit_user'])){
     
-      $post_title = $_POST['post_title'];
-      $post_category_id = $_POST['post_category'];
-      $post_author = $_POST['post_author'];
-      $post_status = $_POST['post_status'];
-      $post_tags = $_POST['post_tags'];
-      $post_image = $_FILES['image']['name'];
-      $post_image_temp = $_FILES['image']['tmp_name'];
-      $post_content = $_POST['post_content'];
+        $user_username = $_POST['username'];
+        $user_password = $_POST['password'];
+        $user_firstname = $_POST['firstname'];
+        $user_lastname = $_POST['lastname'];
+        $user_email = $_POST['email'];
+        $user_role = $_POST['role'];
+        $user_image = $_FILES['image']['name'];
+        $user_image_temp = $_FILES['image']['tmp_name'];
     
-    move_uploaded_file($post_image_temp, "../images/$post_image");
+    move_uploaded_file($user_image_temp, "../images/$user_image");
     
     if(empty($post_image)) {
-        $query = "SELECT * FROM posts WHERE post_id = $p_id ";
+        $query = "SELECT * FROM users WHERE id = $u_id ";
         $query_select_image = mysqli_query($connection, $query);
         
         while($row = mysqli_fetch_array($query_select_image)){
-            $post_image = $row['post_image'];
+            $user_image = $row['user_image'];
         }
     }
     
-    $query = "UPDATE posts SET post_title = '{$post_title}', post_category_id = '{$post_category_id}', post_date = now(), post_author = '{$post_author}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_content = '{$post_content}', post_image = '{$post_image}' WHERE post_id = {$p_id}";
+    $query = "UPDATE users SET username = '{$user_username}', password = '{$user_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
     
     $edit_post_query = mysqli_query($connection, $query);
     
     ConfirmQuery($edit_post_query);
+    header("Location: users.php");
     
 }
 
@@ -86,23 +87,20 @@ if(isset($_POST['edit_user'])){
     </div>
     <div class="form-group">
        <label for="user_role">Role</label><br>
-       <select name="role" id="">
-          <?php 
-            
-            $query = "SELECT * FROM users";
-            $select_users = mysqli_query($connection, $query);
-                          
-                 while($row = mysqli_fetch_assoc($select_users)){
-                                     
-                    $user_id = $row['id'];
-                    $user_role = $row['role'];
-                     
-                    echo "<option value='$user_id'>$user_role</option>";  
-                 }
-            ?>
+       <select name="role" id="" value="Select Roles">
+       <option value="<?php echo $user_role; ?>">Select Role</option>
+           <?php
+           if ($user_role == 'admin'){
+                echo "<option value='subscriber'>Subscriber</option>";
+           } else {
+               echo "<option value='admin'>Admin</option>";
+           }
+           ?>
+           
+           
         </select>
     </div>
-    <input type="submit" name="edit_user" class="btn btn-primary" value="Create New User">
+    <input type="submit" name="edit_user" class="btn btn-primary" value="Update User">
 </form>
    
   
