@@ -24,19 +24,23 @@
  
 if(isset($_POST['edit_user'])){
     
-        $user_username = $_POST['username'];
         $user_password = $_POST['password'];
         $user_firstname = $_POST['firstname'];
         $user_lastname = $_POST['lastname'];
         $user_email = $_POST['email'];
         $user_role = $_POST['role'];
     
-    $query = "UPDATE users SET username = '{$user_username}', password = '{$user_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', email = '{$user_email}', role = '{$user_role}' WHERE username = '{$username}'";
+    $query = "UPDATE users SET password = '{$user_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', email = '{$user_email}', role = '{$user_role}' WHERE username = '{$username}'";
     
     $edit_post_query = mysqli_query($connection, $query);
     
     ConfirmQuery($edit_post_query);
-    header("Location: users.php");
+    
+    if($_SESSION['password'] === $user_password){
+        header("Location: users.php");
+    } else {
+        header("Location: ../includes/logout.php");
+    }
     
 }
 
@@ -58,18 +62,11 @@ if(isset($_POST['edit_user'])){
                         <h1 class="page-header">
                             Welcome to Admin Page
                             <small>Author</small>
+                            
                         </h1>
-                          
+
                                                 <!--- FORM STARTS HERE -->                      
   <form action="" method="POST" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="title">Username</label>
-        <input type="text" class="form-control" name="username" value="<?php echo $user_username; ?>">
-    </div>
-    <div class="form-group">
-        <label for="title">Password</label>
-        <input type="password" class="form-control" name="password" value="<?php echo $user_password; ?>">
-    </div>
     <div class="form-group">
         <label for="post_status">First Name</label>
         <input type="text" class="form-control" name="firstname" value="<?php echo $user_firstname; ?>">
@@ -83,6 +80,10 @@ if(isset($_POST['edit_user'])){
         <input type="text" class="form-control" name="email" value="<?php echo $user_email; ?>">
     </div>
     <div class="form-group">
+        <label for="title">Password</label>
+        <input type="password" class="form-control" name="password" value="<?php echo $user_password; ?>">
+    </div>
+    <div class="form-group">
        <label for="user_role">Role</label><br>
        <select name="role" id="" value="Select Roles">
        <option value="<?php echo $user_role; ?>">Select Role</option>
@@ -93,8 +94,6 @@ if(isset($_POST['edit_user'])){
                echo "<option value='admin'>Admin</option>";
            }
            ?>
-           
-           
         </select>
     </div>
     <input type="submit" name="edit_user" class="btn btn-primary" value="Update Profile">
