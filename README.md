@@ -1,16 +1,3 @@
-# cms_php
+# cms_php v0.7
 
-test1
-
-test2
-
-test3 test 4 
-
-$name = $_POST[‘name’];
-$surname = $_POST[‘surname’];
-
-if (isset($_POST[‘name’])){
- echo “Name is submitted correctly”;
-} else {
- echo “Name is not submitted.”;
-}
+A simple lightweight CMS system, fully modular to work with any static HTML designs. Constantly developed and maintained in my spare time. It will be converted to an OOP MVC soon. 
