@@ -36,6 +36,7 @@ if($username === $user && $password === $pass) {
     $_SESSION['firstname'] = $firstname;
     $_SESSION['lastname'] = $lastname;
     $_SESSION['role'] = $role;
+    $_SESSION['password'] = $pass;
     header('Location: ../admin/index.php');
     
 } else {
