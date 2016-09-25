@@ -111,7 +111,7 @@
                   <?php
                     $query = "SELECT * FROM comments WHERE comment_post_id = {$the_post_id} AND comment_status = 'approved' ORDER BY comment_id DESC ";
                     $select_comment_query = mysqli_query($connection, $query);
-                    if (!select_comment_query) {
+                    if (!$select_comment_query) {
                         die ('QUERY FAILED' . mysqli_error($connection));
                     }
                 
