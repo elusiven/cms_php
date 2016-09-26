@@ -55,7 +55,7 @@ if(isset($_POST['edit_post'])){
     
     ConfirmQuery($edit_post_query);
     
-    header('Location: posts.php');
+    echo "<div class='alert alert-success'><strong>Post Successfuly Updated.</strong> <a href='../post.php?p_id={$post_id}'>View Post</a> or go back to <a href='posts.php'>All Posts</a></div>";
     
 }
 
@@ -70,7 +70,8 @@ if(isset($_POST['edit_post'])){
     </div>
     <div class="form-group">
         <select name="post_category" id="">
-          <?php 
+
+           <?php 
             
             $query = "SELECT * FROM categories";
             $select_categories = mysqli_query($connection, $query);
@@ -90,8 +91,18 @@ if(isset($_POST['edit_post'])){
         <input type="text" class="form-control" name="post_author" value="<?php echo $post_author; ?>">
     </div>
     <div class="form-group">
-        <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status" value="<?php echo $post_status; ?>">
+        <label for="post_status">Post Status</label><br>
+        <select name="post_status" id="post_status">
+           <option value='<?php echo $post_status; ?>'><?php echo $post_status; ?></option>
+           <?php
+           if($post_status === 'published'){
+            echo "<option value='draft'>Draft</option>";  
+           } else {
+            echo "<option value='published'>Published</option>";  
+           }
+           ?>
+            
+        </select>
     </div>
     <div class="form-group">
         <label for="post_image">Post Image</label><br>

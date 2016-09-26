@@ -18,6 +18,8 @@ if(isset($_POST['create_user'])){
     $add_user_query = mysqli_query($connection, $query);
     
     ConfirmQuery($add_user_query);
+    
+    echo "<div class='alert alert-success'><strong>User Created:</strong> " . " " . "<a href='users.php'>View Users</a></div>";
 }
 
 
