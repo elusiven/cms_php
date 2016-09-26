@@ -9,9 +9,9 @@ if(!isset($_SESSION['role'])) {
         header('Location: ../index.php');
 } else {
     // If the user has a role admin then allow admin section, otherwise redirect to index. 
-    if ($_SESSION['role'] !== 'admin') {
-        header('Location: ../index.php');
-    }
+   // if ($_SESSION['role'] !== 'admin') {
+   //     header('Location: ../index.php');
+    //}
 }
 
 
@@ -49,6 +49,7 @@ if(!isset($_SESSION['role'])) {
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+    <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
 
 </head>
 

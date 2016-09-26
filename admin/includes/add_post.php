@@ -17,11 +17,15 @@ if(isset($_POST['create_post'])){
     
     move_uploaded_file($post_image_temp, "../images/$post_image");
     
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comment_count, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
+    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
     
     $add_post_query = mysqli_query($connection, $query);
     
     ConfirmQuery($add_post_query);
+    
+    $post_id = mysqli_insert_id($connection);
+    
+    echo "<div class='alert alert-success'><strong>Post Successfuly Created.</strong> <a href='../post.php?p_id={$post_id}'>View Post</a> or go back to <a href='posts.php'>All Posts</a></div>";
 }
 
 
@@ -36,7 +40,7 @@ if(isset($_POST['create_post'])){
     </div>
     <div class="form-group">
         <select name="post_category" id="">
-          <?php 
+           <?php 
             
             $query = "SELECT * FROM categories";
             $select_categories = mysqli_query($connection, $query);
@@ -56,8 +60,12 @@ if(isset($_POST['create_post'])){
         <input type="text" class="form-control" name="author">
     </div>
     <div class="form-group">
-        <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status">
+        <label for="post_status">Post Status</label><br>
+        <select name="post_status" id="">
+            <option value="draft">Select Options</option>
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+        </select>
     </div>
     <div class="form-group">
         <label for="post_image">Post Image</label>

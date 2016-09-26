@@ -29,6 +29,8 @@ while($row = mysqli_fetch_array($select_user_query)){
     $role = $row['role'];
 }
 
+$password = crypt($password, $pass);
+
 if($username === $user && $password === $pass) {
     
     $_SESSION['id'] = $id;

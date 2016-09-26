@@ -17,7 +17,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['firstname'] . ' ' . $_SESSION['lastname']; ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                            <a href="profile.php"><i class="fa fa-fw fa-user"></i> Profile</a>
                         </li>
                         <li class="divider"></li>
                         <li>
@@ -34,7 +34,7 @@
                         <a href="index.php"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                     </li>                
                              <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#posts-dropdown"><i class="fa fa-fw fa-note"></i>Posts <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#posts-dropdown"><i class="fa fa-pencil-square-o"></i> Posts <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="posts-dropdown" class="collapse">
                             <li>
                                 <a href="../admin/posts.php"> View All Posts</a>
@@ -45,14 +45,14 @@
                         </ul>
                     
                     <li>
-                        <a href="../admin/categories.php"><i class="fa fa-fw fa-wrench"></i> Categories</a>
+                        <a href="../admin/categories.php"><i class="fa fa-archive"></i> Categories</a>
                     </li>
                     
                     <li class="">
-                        <a href="comments.php"><i class="fa fa-fw fa-file"></i> Comments</a>
+                        <a href="comments.php"><i class="fa fa-comments"></i> Comments</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="collapse" data-target="#users-dropdown"><i class="fa fa-fw fa-user"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#users-dropdown"><i class="fa fa-users"></i> Users <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="users-dropdown" class="collapse">
                             <li>
                                 <a href="users.php">View All Users</a>
@@ -63,7 +63,7 @@
                         </ul>
                     </li>
                      <li>
-                        <a href="profile.php"><i class="fa fa-fw fa-dashboard"></i> Profile</a>
+                        <a href="profile.php"><i class="fa fa-user"></i> Profile</a>
                     </li>  
                 </ul>
             </div>

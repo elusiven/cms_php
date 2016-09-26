@@ -24,6 +24,7 @@ $select_users_by_id = mysqli_query($connection, $query);
           
       }
 
+
 if(isset($_POST['edit_user'])){
     
         $user_username = $_POST['username'];
@@ -46,12 +47,22 @@ if(isset($_POST['edit_user'])){
         }
     }
     
-    $query = "UPDATE users SET username = '{$user_username}', password = '{$user_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
+    $query = "SELECT randSalt FROM users ";
+    $select_randsalt_query = mysqli_query($connection, $query);
+    if(!$select_randsalt_query){
+        die('Query Failed.' . mysqli_error($connection));
+    }
+    
+    $row = mysqli_fetch_array($select_randsalt_query);
+    $salt = $row['randSalt'];
+    $hashed_password = crypt($user_password, $salt);
+    
+    $query = "UPDATE users SET username = '{$user_username}', password = '{$hashed_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
     
     $edit_post_query = mysqli_query($connection, $query);
     
     ConfirmQuery($edit_post_query);
-    header("Location: users.php");
+    echo "<div class='alert alert-success'><strong>User has been successfuly edited.</strong> <a href='users.php'>View All Users</a></div>";
     
 }
 
@@ -66,7 +77,7 @@ if(isset($_POST['edit_user'])){
     </div>
     <div class="form-group">
         <label for="title">Password</label>
-        <input type="text" class="form-control" name="password" value="<?php echo $user_password; ?>">
+        <input type="password" class="form-control" name="password" value="<?php echo $user_password; ?>">
     </div>
     <div class="form-group">
         <label for="post_status">First Name</label>
