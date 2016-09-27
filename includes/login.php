@@ -1,7 +1,6 @@
 <?php include "db.php";
 
 include "../admin/functions.php";
-include "errors.php";
 
 session_start();
 
@@ -29,9 +28,7 @@ while($row = mysqli_fetch_array($select_user_query)){
     $role = $row['role'];
 }
 
-$password = crypt($password, $pass);
-
-if($username === $user && $password === $pass) {
+if(password_verify($password, $pass) && $username === $user) {
     
     $_SESSION['id'] = $id;
     $_SESSION['username'] = $user;

@@ -15,7 +15,7 @@ $select_users_by_id = mysqli_query($connection, $query);
       while($row = mysqli_fetch_assoc($select_users_by_id)) {
                                                              
         $user_username = $row['username'];
-        $user_password = $row['password'];
+        $db_password = $row['password'];
         $user_firstname = $row['firstname'];
         $user_lastname = $row['lastname'];
         $user_image = $row['user_image'];
@@ -47,23 +47,34 @@ if(isset($_POST['edit_user'])){
         }
     }
     
-    $query = "SELECT randSalt FROM users ";
-    $select_randsalt_query = mysqli_query($connection, $query);
-    if(!$select_randsalt_query){
-        die('Query Failed.' . mysqli_error($connection));
+    $user_password = mysqli_real_escape_string($connection, $user_password);
+
+    $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+
+    $query_with_pass = "UPDATE users SET username = '{$user_username}', password = '{$hashed_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
+    
+    $query = "UPDATE users SET username = '{$user_username}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
+    
+    if(!empty($_POST['password']) && !empty($_POST['username']) && !empty($_POST['email'])){
+        
+        if($user_password === $db_password){
+            // pass is same
+            $edit_user = mysqli_query($connection, $query);
+            $message = "<div class='alert alert-success'><strong>User has been successfuly edited.</strong> <a href='users.php'>View All Users</a></div>";
+        } else {
+            // pass is different
+            $edit_user_withpass = mysqli_query($connection, $query_with_pass);
+            header('Location: ../includes/logout.php');
+        }
+        
+    } else {
+        
+        $message = "<div class='alert alert-danger'><strong>Missing Information.</strong> Fields cannot be empty.</div>";
+        
     }
     
-    $row = mysqli_fetch_array($select_randsalt_query);
-    $salt = $row['randSalt'];
-    $hashed_password = crypt($user_password, $salt);
-    
-    $query = "UPDATE users SET username = '{$user_username}', password = '{$hashed_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_image = '{$user_image}', email = '{$user_email}', role = '{$user_role}' WHERE id = {$u_id}";
-    
-    $edit_post_query = mysqli_query($connection, $query);
-    
-    ConfirmQuery($edit_post_query);
-    echo "<div class='alert alert-success'><strong>User has been successfuly edited.</strong> <a href='users.php'>View All Users</a></div>";
-    
+} else {
+    $message = "";
 }
 
 ?>
@@ -71,13 +82,14 @@ if(isset($_POST['edit_user'])){
 
   
   <form action="" method="POST" enctype="multipart/form-data">
+   <?php echo $message; ?>
     <div class="form-group">
         <label for="title">Username</label>
         <input type="text" class="form-control" name="username" value="<?php echo $user_username; ?>">
     </div>
     <div class="form-group">
         <label for="title">Password</label>
-        <input type="password" class="form-control" name="password" value="<?php echo $user_password; ?>">
+        <input type="password" class="form-control" name="password" value="<?php echo $db_password; ?>">
     </div>
     <div class="form-group">
         <label for="post_status">First Name</label>

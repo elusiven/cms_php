@@ -15,9 +15,13 @@
                 <?php
 
                 if(isset($_GET['p_id'])){
+                
                     $the_post_id = $_GET['p_id'];
-                }
-
+                
+                
+                $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id =" . mysqli_real_escape_string($connection, $the_post_id) . " ";
+                $send_query = mysqli_query($connection, $view_query);
+                    
                 $query = "SELECT * FROM posts WHERE post_id = $the_post_id ";
                 $select_all_posts_query = mysqli_query($connection,$query);
 
@@ -28,6 +32,7 @@
                     $post_date = $row['post_date'];
                     $post_image = $row['post_image'];
                     $post_content = $row['post_content'];
+                    $post_views = $row['post_views_count'];
 
                     ?>
 
@@ -41,9 +46,10 @@
                     <a href="post.php?p_id=<?php echo $post_id ?>"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo $post_author; ?></a>
+                    by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
                 </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?> (<?php echo $post_views; ?> Views)
+</p>
                 <hr>
                 <img class="img-responsive" src="images/<?php echo $post_image; ?>" alt="">
                 <hr>
@@ -140,10 +146,18 @@
                     </div>
                 </div>
                     
-                    <?php } ?>
+                <?php } ?>
 
 
             </div>
+            
+            <?php
+            
+             } else {
+                    header('Location: index.php');
+                } 
+                    
+            ?>
 
             <!-- Blog Sidebar Widgets Column -->
        <?php include "includes/sidebar.php"; ?>

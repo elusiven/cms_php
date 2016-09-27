@@ -13,7 +13,7 @@
         
          $user_id = $row['id'];
          $user_username = $row['username'];
-         $user_password = $row['password'];
+         $db_password = $row['password'];
          $user_firstname = $row['firstname'];
          $user_lastname = $row['lastname'];
          $user_email = $row['email'];
@@ -30,22 +30,39 @@ if(isset($_POST['edit_user'])){
         $user_email = $_POST['email'];
         $user_role = $_POST['role'];
     
-    $query = "UPDATE users SET password = '{$user_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', email = '{$user_email}', role = '{$user_role}' WHERE username = '{$username}'";
+        $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
     
-    $edit_post_query = mysqli_query($connection, $query);
+        $query_with_pass = "UPDATE users SET password = '{$hashed_password}', firstname = '{$user_firstname}', lastname = '{$user_lastname}', email = '{$user_email}', role = '{$user_role}' WHERE username = '{$username}' ";
+        $query = "UPDATE users SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', email = '{$user_email}', role = '{$user_role}' WHERE username = '{$username}' ";
+
+      if(!empty($_POST['password']) && !empty($_POST['firstname']) && !empty($_POST['email'])){
+          
+        if($user_password === $db_password){
+          // pass is the same
+        $update_profile_query = mysqli_query($connection, $query);
+        $message = "<div class='alert alert-success'><strong>Profile Successfuly Updated.</strong> Go back to <a href='index.php'>Dashboard</a> or <a href='users.php'>Users</a></div>";
+
+      } else {
+          // pass is different
+        $update_profile_with_pass_query = mysqli_query($connection, $query_with_pass);
+        header('Location: ../includes/logout.php');
+      }
+          
+      } else {
+          
+          $message = "<div class='alert alert-danger'><strong>Missing information.</strong> Fields cannot be empty.</div> ";
+      }
     
-    ConfirmQuery($edit_post_query);
+      
     
-    if($_SESSION['password'] === $user_password){
-        header("Location: users.php");
-    } else {
-        header("Location: ../includes/logout.php");
-    }
     
+} else {
+    $message = "";
 }
 
 
     
+
 ?>
 
     <div id="wrapper">
@@ -67,6 +84,7 @@ if(isset($_POST['edit_user'])){
 
                                                 <!--- FORM STARTS HERE -->                      
   <form action="" method="POST" enctype="multipart/form-data">
+   <?php echo $message; ?>
     <div class="form-group">
         <label for="post_status">First Name</label>
         <input type="text" class="form-control" name="firstname" value="<?php echo $user_firstname; ?>">
@@ -81,7 +99,7 @@ if(isset($_POST['edit_user'])){
     </div>
     <div class="form-group">
         <label for="title">Password</label>
-        <input type="password" class="form-control" name="password" value="<?php echo $user_password; ?>">
+        <input type="password" class="form-control" name="password" value="<?php echo $db_password; ?>">
     </div>
     <div class="form-group">
        <label for="user_role">Role</label><br>
