@@ -45,8 +45,8 @@
                 break;
                     
                 case 'resetviews':
-                    $query = "UPDATE posts SET post_views_count = 'null' WHERE post_id = {$checkBoxValue} ";
-                    $reset_views_query = mysqli_query($connection, $reset_views_query);
+                    $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id = {$checkBoxValue} ";
+                    $reset_views_query = mysqli_query($connection, $reset_query);
                     ConfirmQuery($reset_views_query);
                 break;
             }
