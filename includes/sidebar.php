@@ -32,6 +32,9 @@
                     <button class="btn btn-primary" name="login" type="submit">Submit</button>
                     </span>
                     </div>
+                    <div class="form-group">
+                    <p>Not registered? <a href="registration.php">Register Now.</a></p>
+                    </div>
                     </form> <!-- Search Form -->
                     <!-- /.input-group -->
                 

@@ -23,22 +23,15 @@ if(isset($_POST['submit'])){
     
     if(!empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['email'])){
        
-    $query = "SELECT randSalt FROM users";
-    $select_rand_salt = mysqli_query($connection, $query);
-    
-    $row = mysqli_fetch_array($select_rand_salt);
-    $salt = $row['randSalt'];
+    $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
         
-    $password = crypt($password, $salt);
-    
-    
     $query = "INSERT INTO users(username, password, email) VALUES('{$username}', '{$password}', '{$email}')";
     $create_new_user = mysqli_query($connection, $query);
         
     $message = "<div class='alert alert-success'>Your registration is completed, you may now login.</div>";
         
     } else {
-        $message = "<div class='alert alert-danger'>Fields cannot be empty.</div>";
+        $message = "<div class='alert alert-danger'><strong>Missing Information.</strong> Fields cannot be empty.</div>";
     }
 
 } else {
