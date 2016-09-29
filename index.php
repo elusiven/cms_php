@@ -14,6 +14,9 @@
               
                 <?php
                 
+                $per_page = 5;
+
+                
                 if(isset($_GET['page'])){
                     $page = $_GET['page'];
                 } else {
@@ -23,7 +26,7 @@
                 if($page == "" || $page == 1) {
                     $page_1 = 0;
                 } else {
-                    $page_1 = ($page * 5) - 5;
+                    $page_1 = ($page * $per_page) - $per_page;
                 }
                 
                 $post_query_count = "SELECT * FROM posts ";
@@ -32,13 +35,13 @@
                 
                 $count = ceil($count / 5);
                 
-                $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, 5";
+                $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
                 $select_all_posts_query = mysqli_query($connection,$query);
 
                     while($row = mysqli_fetch_assoc($select_all_posts_query)){
                     $post_id = $row['post_id'];
                     $post_title = $row['post_title'];
-                    $post_author = $row['post_author'];
+                    $post_user = $row['post_user'];
                     $post_date = $row['post_date'];
                     $post_image = $row['post_image'];
                     $post_content = substr($row['post_content'],0,100);
@@ -55,7 +58,7 @@
                     <a href="post.php?p_id=<?php echo $post_id ?>"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
+                    by <a href="author_posts.php?user=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?> (<?php echo $post_views; ?> Views)</p>
                 <hr>
@@ -72,15 +75,8 @@
                     
                     ?>
 
-                
-
-                
-
                 <?php } ?>
 
-                
-                
-                
 
             </div>
 
@@ -97,7 +93,17 @@
            <?php
             
                 for($i = 1; $i <= $count; $i++){
-                    echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                    
+                    if($i == $page){
+                        
+                        echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+
+                    } else {
+                        
+                        echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+
+                    }
+                    
                 }
             
             ?>
