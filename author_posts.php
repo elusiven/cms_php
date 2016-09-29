@@ -16,25 +16,25 @@
 
                 if(isset($_GET['p_id'])){
                     $the_post_id = $_GET['p_id'];
-                    $the_post_author = $_GET['author'];
+                    $the_post_user = $_GET['user'];
                 }
                 
                 ?>
                 
                 <h1 class="page-header">
                     All posts for
-                    <small><?php echo $the_post_author; ?></small>
+                    <small><?php echo $the_post_user; ?></small>
                 </h1>
                 
                 <?php
 
-                $query = "SELECT * FROM posts WHERE post_author = '{$the_post_author}' ";
+                $query = "SELECT * FROM posts WHERE post_user = '{$the_post_user}' ";
                 $select_all_posts_query = mysqli_query($connection,$query);
 
                 while($row = mysqli_fetch_assoc($select_all_posts_query)){
                     $post_id = $row['post_id'];
                     $post_title = $row['post_title'];
-                    $post_author = $row['post_author'];
+                    $post_user = $row['post_user'];
                     $post_date = $row['post_date'];
                     $post_image = $row['post_image'];
                     $post_content = substr($row['post_content'],0,100);
@@ -46,7 +46,7 @@
                     <a href="post.php?p_id=<?php echo $post_id ?>"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="author_posts.php?author=<?php echo $post_author; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_author; ?></a>
+                    by <a href="author_posts.php?user=<?php echo $post_user; ?>&p_id=<?php echo $post_id; ?>"><?php echo $post_user; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $post_date; ?></p>
                 <hr>

@@ -1,7 +1,7 @@
 <?php include "includes/admin_header.php"; ?>
-   
+   <?php include "functions.php"; ?>
     <div id="wrapper">
-       <?php include "includes/admin_navigation.php"; ?>
+      <?php include "includes/admin_navigation.php"; ?>
 
         <div id="page-wrapper">
 

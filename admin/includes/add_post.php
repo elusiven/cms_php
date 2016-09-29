@@ -2,22 +2,22 @@
 
 if(isset($_POST['create_post'])){
 
-    $post_title = $_POST['title'];
-    $post_author = $_POST['author'];
-    $post_category = $_POST['post_category'];
-    $post_status = $_POST['post_status'];
+    $post_title = escape($_POST['title']);
+    $post_user = escape($_POST['post_user']);
+    $post_category = escape($_POST['post_category']);
+    $post_status = escape($_POST['post_status']);
     
     $post_image = $_FILES['image']['name'];
     $post_image_temp = $_FILES['image']['tmp_name'];
     
-    $post_tags = $_POST['post_tags'];
-    $post_content = $_POST['post_content'];
+    $post_tags = escape($_POST['post_tags']);
+    $post_content = escape($_POST['post_content']);
     $post_date = date('d-m-y');
     //$post_comment_count = 4;
     
     move_uploaded_file($post_image_temp, "../images/$post_image");
     
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
+    $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_user}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
     
     $add_post_query = mysqli_query($connection, $query);
     
@@ -39,6 +39,7 @@ if(isset($_POST['create_post'])){
         <input type="text" class="form-control" name="title">
     </div>
     <div class="form-group">
+       <label for="post_category">Category</label><br>
         <select name="post_category" id="">
            <?php 
             
@@ -55,9 +56,23 @@ if(isset($_POST['create_post'])){
             ?>
         </select>
     </div>
-    <div class="form-group">
-        <label for="title">Post Author</label>
-        <input type="text" class="form-control" name="author">
+        <div class="form-group">
+        <label for="users">Users</label><br>
+        <select name="post_user" id="">
+           <?php 
+            
+            $query = "SELECT * FROM users";
+            $select_users = mysqli_query($connection, $query);
+                          
+                 while($row = mysqli_fetch_assoc($select_users)){
+                                     
+                    $user_id = $row['id'];
+                    $username = $row['username'];
+                     
+                    echo "<option value='$username'>$username</option>";  
+                 }
+            ?>
+        </select>
     </div>
     <div class="form-group">
         <label for="post_status">Post Status</label><br>

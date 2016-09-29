@@ -29,7 +29,7 @@
                     $select_post_query = mysqli_query($connection, $query);
                     
                     while($row = mysqli_fetch_array($select_post_query)){
-                        $post_author = $row['post_author'];
+                        $post_user = $row['post_user'];
                         $post_title = $row['post_title'];
                         $post_cat = $row['post_category_id'];
                         $post_status = $row['post_status'];
@@ -39,7 +39,7 @@
                         $post_content = $row['post_content'];
                     }
                     
-                    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES({$post_cat}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}') ";
+                    $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) VALUES({$post_cat}, '{$post_title}', '{$post_user}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}') ";
                     $copy_query = mysqli_query($connection, $query);
                     ConfirmQuery($copy_query);
                 break;
@@ -47,7 +47,6 @@
                 case 'resetviews':
                     $reset_query = "UPDATE posts SET post_views_count = 0 WHERE post_id = {$checkBoxValue} ";
                     $reset_views_query = mysqli_query($connection, $reset_query);
-                    ConfirmQuery($reset_views_query);
                 break;
             }
         }
@@ -99,6 +98,7 @@
                                     
          $post_id = $row['post_id'];
          $post_author = $row['post_author'];
+         $post_user = $row['post_user'];
          $post_title = $row['post_title'];
          $post_cat = $row['post_category_id'];
          $post_status = $row['post_status'];
@@ -113,7 +113,12 @@
          <td><input class='checkBoxes' type='checkbox' name='checkBoxArray[]' value='<?php echo $post_id; ?>'></td>
          <?php 
          echo "<td>$post_id</td>";
-         echo "<td>$post_author</td>";
+          
+         if(!empty($post_user)) {
+            echo "<td>$post_user</td>";
+         }
+          
+          
          echo "<a href='post.php?p_id={$post_id}'><td>$post_title</td></a>";
           
           $query = "SELECT * FROM categories WHERE cat_id = $post_cat ";
@@ -131,7 +136,15 @@
          echo "<td>$post_status</td>";
          echo "<td><img src='../images/$post_image' width='100px' alt='image'></td>";
          echo "<td>$post_tags</td>";
-         echo "<td>$post_comments</td>";
+          
+          $query = "SELECT * FROM comments WHERE comment_post_id = $post_id ";
+          $send_comment_query = mysqli_query($connection, $query);
+          
+          $row = mysqli_fetch_array($send_comment_query);
+          $comment_id = $row['comment_id'];
+          $count_comments = mysqli_num_rows($send_comment_query);
+          
+         echo "<td><a href='post_comments.php?id=$post_id'>$count_comments</a></td>";
          echo "<td>$post_date</td>";
          echo "<td>$post_views</td>";
          echo "<td><a href='../post.php?p_id={$post_id}'>View</a></td>";

@@ -171,6 +171,49 @@ function ApproveComment() {
         }
 }
 
+// COMMENTS FOR SPECIFIC POSTS
+
+function ShowPostComments() {
+    
+    global $connection;
+    
+    $query = "SELECT * FROM comments WHERE comment_post_id =" . mysqli_reaL_escape_string($connection, $_GET['id']) . " ";
+    $select_comments = mysqli_query($connection, $query);
+                                
+      while($row = mysqli_fetch_assoc($select_comments)) {
+                                   
+                                    
+         $comment_id = $row['comment_id'];
+         $comment_post_id = $row['comment_post_id'];
+         $comment_author = $row['comment_author'];
+         $comment_email = $row['comment_email'];
+         $comment_content = $row['comment_content'];
+         $comment_status = $row['comment_status'];
+         $comment_date = $row['comment_date'];
+                                    
+         echo "<tr>";
+         echo "<td>$comment_id</td>";
+         echo "<td>$comment_author</td>";
+         echo "<td>$comment_content</td>";
+         echo "<td>$comment_email</td>";
+         echo "<td>$comment_status</td>";
+          
+          $query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
+          $select_post_id_query = mysqli_query($connection, $query);
+          while($row = mysqli_fetch_assoc($select_post_id_query)){
+              $post_id = $row['post_id'];
+              $post_title = $row['post_title'];
+          }
+          
+         echo "<td><a href='../post.php?p_id=$post_id'>{$post_title}</a></td>";
+         echo "<td>$comment_date</td>";
+         echo "<td><a href='post_comments.php?approve=$comment_id'>Approve</a></td>";
+         echo "<td><a href='post_comments.php?unapprove=$comment_id'>Unapprove</a></td>";
+         echo "<td><a href='post_comments.php?delete=$comment_id'>Delete</a></td>";
+         echo "</tr>";
+      }
+}
+
 // USER FUNTIONS START HERE
 
 function ShowAllUsers() {
@@ -211,16 +254,61 @@ function DeleteUser() {
     if(isset($_GET['delete'])) {
            
         global $connection;
-      
+        
+        if(isset($_SESSION['user_role'])){
+            if($_SESSION['user_role'] === 'admin'){
+        
         $the_user_id = $_GET['delete'];
         $query = "DELETE FROM users WHERE id = $the_user_id ";
         $delete_user_query = mysqli_query($connection, $query);
       
         ConfirmQuery($delete_user_query);
-        header("Location: users.php"); 
-    
+        header("Location: users.php");
+           }
+        }
     }
 }
 
+function users_online() {
+    
+
+        if(isset($_GET['onlineusers'])){
+        
+        global $connection;
+            
+        if(!$connection){
+            session_start();
+            include("../includes/db.php");
+            
+            
+        $session = session_id();
+        $time = time();
+        $time_out_in_seconds = 05;
+        $time_out = $time - $time_out_in_seconds;
+        
+        $query = "SELECT * from users_online WHERE session = '$session' ";
+        $send_query = mysqli_query($connection, $query);
+        $count = mysqli_num_rows($send_query);
+        
+        if($count == NULL){
+            mysqli_query($connection, "INSERT INTO users_online(session, time) VALUES('$session', '$time') ");
+        } else {
+            mysqli_query($connection, "UPDATE users_online SET time = '$time' WHERE session = '$session' ");
+        }
+        
+        $users_online_query = mysqli_query($connection, "SELECT * FROM users_online WHERE time > '$time_out' ");
+        echo $count_user = mysqli_num_rows($users_online_query);
+            
+            
+            }  // Connection ends here               
+        } // Get Request ends here 
+}
+
+users_online();
+
+function escape($string) {
+    global $connection;
+    return mysqli_real_escape_string($connection, trim($string));
+}
 
 ?>

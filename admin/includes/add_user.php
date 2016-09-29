@@ -2,9 +2,9 @@
 
 if(isset($_POST['create_user'])){
 
-    $user_username = $_POST['username'];
-    $user_password = $_POST['password'];
-    $user_firstname = $_POST['firstname'];
+    $user_username = escape($_POST['username']);
+    $user_password = escape($_POST['password']);
+    $user_firstname = escape($_POST['firstname']);
     $user_lastname = $_POST['lastname'];
     $user_image = $_FILES['image']['name'];
     $user_image_temp = $_FILES['image']['tmp_name'];
