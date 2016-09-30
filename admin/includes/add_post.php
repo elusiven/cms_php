@@ -19,13 +19,24 @@ if(isset($_POST['create_post'])){
     
     $query = "INSERT INTO posts(post_category_id, post_title, post_user, post_date, post_image, post_content, post_tags, post_status) VALUES ({$post_category}, '{$post_title}', '{$post_user}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
     
+    if(!empty($_POST['post_title']) && !empty($_POST['post_user']) && !empty($_POST['post_category']) && !empty($_POST['post_content'])){
+        // create a post if not empty
     $add_post_query = mysqli_query($connection, $query);
     
     ConfirmQuery($add_post_query);
     
     $post_id = mysqli_insert_id($connection);
     
-    echo "<div class='alert alert-success'><strong>Post Successfuly Created.</strong> <a href='../post.php?p_id={$post_id}'>View Post</a> or go back to <a href='posts.php'>All Posts</a></div>";
+    $message = "<div class='alert alert-success'><strong>Post Successfuly Created.</strong> <a href='../post.php?p_id={$post_id}'>View Post</a> or go back to <a href='posts.php'>All Posts</a></div>";
+        
+    } else {
+        // error - empty fields
+        $message = "<div class='alert alert-danger'><strong>Missing Information.</strong> All fields must be populated.</div>";
+    }
+    
+
+} else {
+    $message = "";
 }
 
 
@@ -34,6 +45,7 @@ if(isset($_POST['create_post'])){
 
    
 <form action="" method="POST" enctype="multipart/form-data">
+   <?php echo $message; ?>
     <div class="form-group">
         <label for="title">Post Title</label>
         <input type="text" class="form-control" name="title">

@@ -137,21 +137,14 @@
                 
               <?php
                 // Get count of published posts
-                $query = "SELECT * from posts WHERE post_status = 'published' ";
-                $select_published_posts = mysqli_query($connection, $query);
-                $post_published_count = mysqli_num_rows($select_published_posts);
+               
+                $post_published_count = checkStatus('posts','post_status','published');
                 // Get count of draft posts
-                $query = "SELECT * from posts WHERE post_status = 'draft' ";
-                $select_draft_posts = mysqli_query($connection, $query);
-                $post_draft_count = mysqli_num_rows($select_draft_posts);
+                $post_draft_count = checkStatus('posts','post_status','draft');
                 // Get count of unapproved comments
-                $query = "SELECT * from comments WHERE comment_status = 'unapproved' ";
-                $select_unapproved_comments = mysqli_query($connection, $query);
-                $comment_unapproved_count = mysqli_num_rows($select_unapproved_comments);
+                $comment_unapproved_count = checkStatus('comments','comment_status','unapproved');
                 // Get count of subscribers
-                $query = "SELECT * from users WHERE role = 'subscriber' ";
-                $select_user_role = mysqli_query($connection, $query);
-                $user_role_count = mysqli_num_rows($select_user_role);
+                $user_role_count = checkStatus('users','role','subscriber');
             ?>
                 
                 

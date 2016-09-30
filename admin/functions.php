@@ -18,7 +18,7 @@ function insert_categories() {
 
       if(isset($_POST['submit'])){
                             
-                            $cat_title = $_POST['cat_title'];
+                            $cat_title = escape($_POST['cat_title']);
                             
                             if($cat_title == "" || empty($cat_title)){
                                 echo '<div class="alert alert-warning"><strong>Warning!</strong> This field should not be empty.</div>';
@@ -66,7 +66,7 @@ function DeleteCategory() {
         
          global $connection;
         
-         $the_cat_id = $_GET['delete'];                           
+         $the_cat_id = escape($_GET['delete']);                           
          $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id} ";
          $delete_query = mysqli_query($connection, $query);
          header("Location: categories.php");
@@ -79,6 +79,16 @@ function DeleteCategory() {
 function ShowAllPosts() {
     
                                 
+}
+
+function checkStatus($table,$column,$status) {
+    
+    global $connection;
+    
+    $query = "SELECT * from $table WHERE $column = '$status' ";
+    $result = mysqli_query($connection, $query);
+    ConfirmQuery($result);
+    return mysqli_num_rows($result);
 }
 
 
@@ -109,12 +119,14 @@ function ShowAllComments() {
          echo "<td>$comment_email</td>";
          echo "<td>$comment_status</td>";
           
-          $query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
-          $select_post_id_query = mysqli_query($connection, $query);
+          $comment_post_query = "SELECT * FROM posts WHERE post_id = $comment_post_id ";
+          $select_post_id_query = mysqli_query($connection, $comment_post_query);
           while($row = mysqli_fetch_assoc($select_post_id_query)){
               $post_id = $row['post_id'];
               $post_title = $row['post_title'];
           }
+         
+         ConfirmQuery($select_post_id_query);
           
          echo "<td><a href='../post.php?p_id=$post_id'>{$post_title}</a></td>";
          echo "<td>$comment_date</td>";

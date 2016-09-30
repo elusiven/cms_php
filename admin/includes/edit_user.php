@@ -27,12 +27,12 @@ $select_users_by_id = mysqli_query($connection, $query);
 
 if(isset($_POST['edit_user'])){
     
-        $user_username = $_POST['username'];
-        $user_password = $_POST['password'];
-        $user_firstname = $_POST['firstname'];
-        $user_lastname = $_POST['lastname'];
-        $user_email = $_POST['email'];
-        $user_role = $_POST['role'];
+        $user_username = escape($_POST['username']);
+        $user_password = escape($_POST['password']);
+        $user_firstname = escape($_POST['firstname']);
+        $user_lastname = escape($_POST['lastname']);
+        $user_email = escape($_POST['email']);
+        $user_role = escape($_POST['role']);
         $user_image = $_FILES['image']['name'];
         $user_image_temp = $_FILES['image']['tmp_name'];
     
