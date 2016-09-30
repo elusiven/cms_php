@@ -29,13 +29,17 @@
                     $page_1 = ($page * $per_page) - $per_page;
                 }
                 
-                $post_query_count = "SELECT * FROM posts ";
+                $post_query_count = "SELECT * FROM posts WHERE post_status = 'published' ";
                 $find_count = mysqli_query($connection, $post_query_count);
                 $count = mysqli_num_rows($find_count);
                 
+                if($count < 1){
+                    echo "<div class='alert alert-warning'><strong>No posts available.</strong> Why not create one?</div>";
+                } else {
+
                 $count = ceil($count / 5);
                 
-                $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page";
+                $query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $page_1, $per_page ";
                 $select_all_posts_query = mysqli_query($connection,$query);
 
                     while($row = mysqli_fetch_assoc($select_all_posts_query)){
@@ -48,10 +52,7 @@
                     $post_status = $row['post_status'];
                     $post_views = $row['post_views_count'];
                     
-                        
-                        
-                    if($post_status === 'published'){
-                        
+                                                
                     ?>
                         <!-- First Blog Post -->
                 <h2> 
